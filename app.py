@@ -38,7 +38,7 @@ df["DPNM"] = RV.DP(df.Q_p, df.Q_f, df.T_f)
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-
+server = app.server
 
 app.layout = html.Div(style={"width":"70vw", "height":"93vh","padding":0,"margin":"auto", "float":"center"},children=[
     dcc.Graph(style={"width":"70vw", "height":"33%","padding":"0px","margin":0},
