@@ -41,7 +41,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
 app.layout = html.Div(style={"margin":"auto", "height":"250vh", "text-align":"center"},children=[
-    html.Div([html.P("These Graphs are horizontal bar graphs set to be 'relative', that means that the QNM and Qpress along with all the other small section are how much you would gain or lose given that change. They Do Not sum to an overall ideal value."),
+    html.Div([
     dcc.Graph(style={"width":"70vw", "height":"30%","padding":"0px","margin":0},
                 id="graph-with-slider1"),
     dcc.Graph(style={"width":"70vw", "height":"30%","padding":0,"margin":0},id="graph-with-slider2"),
@@ -52,9 +52,10 @@ app.layout = html.Div(style={"margin":"auto", "height":"250vh", "text-align":"ce
         max=len(df.Datetime),
         value=2
             ),
-    html.P(id="html-date")
+    html.P(id="html-date"),
+    html.P("These Graphs are horizontal bar graphs set to be 'relative', that means that the QNM and Qpress along with all the other small section are how much you would gain or lose given that change. They Do Not sum to an overall ideal value.")
     ], style={"width":"70vw", "height":"100vh","padding":"0px","margin":"auto"}),
-    html.Div([html.P("The Bullet graph listed below represent Qrefpress in grey, QNM in green and Qp in blue. The right side indicates loss from QNM", style={"mb=0"}),
+    html.Div([
     dcc.Graph(style={"width":"70vw", "height":"90%","padding":"0px","margin":0},
                 id="graph-with-slider4"),
     dcc.Slider(
@@ -63,43 +64,44 @@ app.layout = html.Div(style={"margin":"auto", "height":"250vh", "text-align":"ce
         max=len(df.Datetime),
         value=2
             ),
-    html.P(id="html-date2")
-    ], style={"width":"70vw", "height":"100vh","padding":"0px","margin":"auto"})
+    html.P(id="html-date2"),
+    html.P("The Bullet graph listed below represent Qrefpress in grey, QNM in green and Qp in blue. The right side indicates loss from QNM")
+    ], style={"width":"70vw", "height":"100vh","padding":"60px","margin":"auto"})
  ] )
 
-def MakeBarPlot(X,Y, names):
-    data = []
-    for x, y, name in zip(X,Y, names):
-        data.append({"x":[x], "y":[y], "type":"bar", "orientation":"h","name":name})
+# def MakeBarPlot(X,Y, names):
+#     data = []
+#     for x, y, name in zip(X,Y, names):
+#         data.append({"x":[x], "y":[y], "type":"bar", "orientation":"h","name":name})
 
 
-    return {"data":data,
-                "layout": go.Layout(barmode="relative",title="Flow/Time",
-                yaxis=dict(
-                autorange=True,
-                showgrid=False,
-                ticks='',
-                showticklabels=False
-                ))}
+#     return {"data":data,
+#                 "layout": go.Layout(barmode="relative",title="Flow/Time",
+#                 yaxis=dict(
+#                 autorange=True,
+#                 showgrid=False,
+#                 ticks='',
+#                 showticklabels=False
+# #                 ))}
 
-def MakeBulletPlot(X,Y,Names):
-    graph = go.Indicator(
-    mode = "number+gauge+delta", value = 180,
-    delta = {'reference': 200},
-    domain = {'x': [0, 1], 'y': [0, 1]},
-    title = {'text': "Revenue"},
-    gauge = {
-        'shape': "bullet",
-        'axis': {'range': [None, 300]},
-        'threshold': {
-            'line': {'color': "black", 'width': 2},
-            'thickness': 0.75,
-            'value': [170, 160]},
-        'steps': [
-            {'range': [0, 150], 'color': "gray"},
-            {'range': [150, 250], 'color': "lightgray"}],
-        'bar': {'color': "black"}})
-    return graph
+# def MakeBulletPlot(X,Y,Names):
+#     graph = go.Indicator(
+#     mode = "number+gauge+delta", value = 180,
+#     delta = {'reference': 200},
+#     domain = {'x': [0, 1], 'y': [0, 1]},
+#     title = {'text': "Revenue"},
+#     gauge = {
+#         'shape': "bullet",
+#         'axis': {'range': [None, 300]},
+#         'threshold': {
+#             'line': {'color': "black", 'width': 2},
+#             'thickness': 0.75,
+#             'value': [170, 160]},
+#         'steps': [
+#             {'range': [0, 150], 'color': "gray"},
+#             {'range': [150, 250], 'color': "lightgray"}],
+#         'bar': {'color': "black"}})
+#     return graph
 
     # return {"data":[{"x":[1], "y":["DP"], "type":"bar", "orientation":"h","name":"DP"},
     #             {"x":[2-1], "y":["DP"], "type":"bar", "orientation":"h","name":"New Membrane"}],
@@ -255,4 +257,4 @@ except:
     pass
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)

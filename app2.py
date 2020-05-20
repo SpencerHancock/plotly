@@ -40,78 +40,20 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 server = app.server
 
-app.layout = html.Div(style={"margin":"auto", "height":"250vh", "text-align":"center"},children=[
-    html.Div([
-    dcc.Graph(style={"width":"70vw", "height":"30%","padding":"0px","margin":0},
+app.layout = html.Div(style={"width":"70vw", "height":"93vh","padding":0,"margin":"auto", "float":"center"},children=[
+    dcc.Graph(style={"width":"70vw", "height":"33%","padding":"0px","margin":0},
                 id="graph-with-slider1"),
-    dcc.Graph(style={"width":"70vw", "height":"30%","padding":0,"margin":0},id="graph-with-slider2"),
-    dcc.Graph(style={"width":"70vw", "height":"30%","padding":0,"margin":0},id="graph-with-slider3"),
+    dcc.Graph(style={"width":"70vw", "height":"33%","padding":0,"margin":0},id="graph-with-slider2"),
+    dcc.Graph(style={"width":"70vw", "height":"33%","padding":0,"margin":0},id="graph-with-slider3"),
     dcc.Slider(
         id="day-slider",
         min=min(df.index),
         max=len(df.Datetime),
-        value=2
             ),
-    html.P(id="html-date"),
-    html.P("These Graphs are horizontal bar graphs set to be 'relative', that means that the QNM and Qpress along with all the other small section are how much you would gain or lose given that change. They Do Not sum to an overall ideal value.")
-    ], style={"width":"70vw", "height":"100vh","padding":"0px","margin":"auto"}),
-    html.Div([
-    dcc.Graph(style={"width":"70vw", "height":"90%","padding":"0px","margin":0},
-                id="graph-with-slider4"),
-    dcc.Slider(
-        id="day-slider2",
-        min=min(df.index),
-        max=len(df.Datetime),
-        value=2
-            ),
-    html.P(id="html-date2"),
-    html.P("The Bullet graph listed below represent Qrefpress in grey, QNM in green and Qp in blue. The right side indicates loss from QNM")
-    ], style={"width":"70vw", "height":"100vh","padding":"60px","margin":"auto"})
- ] )
-
-# def MakeBarPlot(X,Y, names):
-#     data = []
-#     for x, y, name in zip(X,Y, names):
-#         data.append({"x":[x], "y":[y], "type":"bar", "orientation":"h","name":name})
+    html.P(id="html-date")
+        ])
 
 
-#     return {"data":data,
-#                 "layout": go.Layout(barmode="relative",title="Flow/Time",
-#                 yaxis=dict(
-#                 autorange=True,
-#                 showgrid=False,
-#                 ticks='',
-#                 showticklabels=False
-# #                 ))}
-
-# def MakeBulletPlot(X,Y,Names):
-#     graph = go.Indicator(
-#     mode = "number+gauge+delta", value = 180,
-#     delta = {'reference': 200},
-#     domain = {'x': [0, 1], 'y': [0, 1]},
-#     title = {'text': "Revenue"},
-#     gauge = {
-#         'shape': "bullet",
-#         'axis': {'range': [None, 300]},
-#         'threshold': {
-#             'line': {'color': "black", 'width': 2},
-#             'thickness': 0.75,
-#             'value': [170, 160]},
-#         'steps': [
-#             {'range': [0, 150], 'color': "gray"},
-#             {'range': [150, 250], 'color': "lightgray"}],
-#         'bar': {'color': "black"}})
-#     return graph
-
-    # return {"data":[{"x":[1], "y":["DP"], "type":"bar", "orientation":"h","name":"DP"},
-    #             {"x":[2-1], "y":["DP"], "type":"bar", "orientation":"h","name":"New Membrane"}],
-    #             "layout": go.Layout(barmode="relative",title="Flow/Time",
-    #             yaxis=dict(
-    #             autorange=True,
-    #             showgrid=False,
-    #             ticks='',
-    #             showticklabels=False
-    #             ))}
 
 try:
     @app.callback(
@@ -153,60 +95,6 @@ try:
                 showticklabels=False
                 ))},
                 df.at[selected_day, "Datetime"]]
-except: pass
-try:
-    @app.callback(
-        [Output('graph-with-slider4', 'figure'),
-        Output('html-date2', 'children')],
-        [Input('day-slider2', 'value')])
-    def update_bulletplot(selected_day):
-        fig = go.Figure()
-        fig.add_trace(go.Indicator(
-        mode = "number+gauge+delta", value = df.at[selected_day, "Q_p"],
-        delta = {'reference': df.at[selected_day, "QNM"]},
-        domain = {'x': [0.25, 1], 'y': [.05, .25]},
-        title = {'text': "Flow"},
-        gauge = {
-            'shape': "bullet",
-            'axis': {'range': [None, max(df.QNM)]},
-            'threshold': {
-                'line': {'color': "green", 'width': 2},
-                'thickness': 0.75,
-                'value': df.at[selected_day, "QNM"]},
-            'steps': [
-                {'range': [0, df.at[selected_day, "Qpress"]], 'color': "gray"},
-                {'range': [df.at[selected_day, "Qpress"], max(df.QNM)], 'color': "white"}],
-            'bar': {'color': "blue"}}))
-        fig.add_trace(go.Indicator(
-                    mode = "number+gauge+delta", value = df.at[selected_day, "SP"],
-                    delta = {'reference': df.at[selected_day, "SP"]},
-                    domain = {'x': [0.25, 1], 'y': [0.4, .6]},
-                    title = {'text': "SP"},
-                    gauge = {
-                        'shape': "bullet",
-                        'axis': {'range': [None, 2]},
-                        'threshold': {
-                            'line': {'color': "green", 'width': 2},
-                            'thickness': 0.75,
-                            'value': df.at[selected_day, "SPNM"]},
-                        'steps': [
-                            {'range': [0, df.at[selected_day, "SPtemp"]], 'color': "gray"},
-                            {'range': [df.at[selected_day, "SPtemp"], max(df.SPNM)], 'color': "white"}],
-                        'bar': {'color': "blue"}}))
-        fig.add_trace(go.Indicator(
-        mode = "number+gauge+delta", value = df.at[selected_day, "dp"],
-        delta = {'reference': df.at[selected_day, "DPNM"]},
-        domain = {'x': [0.25, 1], 'y': [.7,.9 ]},
-        title = {'text': "DP"},
-        gauge = {
-            'shape': "bullet",
-            'axis': {'range': [None, max(df.dp)]},
-            'threshold': {
-                'line': {'color': "green", 'width': 2},
-                'thickness': 0.75,
-                'value': df.at[selected_day, "DPNM"]},
-            'bar': {'color': "blue"}}))
-        return fig, df.at[selected_day, "Datetime"]
 
 
 
@@ -257,4 +145,4 @@ except:
     pass
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=False)
