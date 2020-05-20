@@ -45,7 +45,7 @@ app.layout = html.Div(style={"margin":"auto", "text-align":"center"},children=[
     html.Div(style={"height":"100vh"}, children=[
     html.Div(style = {"height":"80%"}, className="row", children=[
         html.Div(style={"height":"90%"}, className="col-sm-1"),
-        dcc.Graph(style={"height":"90%","padding":"0px","margin":0},
+        dcc.Graph(style={"height":"90%", "margin":"auto"},
                     id="graph-with-slider4", className="col-10"),
         html.Div(style={"height":"90%"}, className="col-sm-1")
     ]),
@@ -194,8 +194,8 @@ def update_bulletplot(selected_day):
     fig.add_trace(go.Indicator(
     mode = "number+gauge+delta", value = df.at[selected_day, "Q_p"],
     delta = {'reference': df.at[selected_day, "QNM"]},
-    domain = {'x': [0, 1], 'y': [.05, .25]},
-    title = {'text': "Flow"},
+    domain = {'x': [0.2, 1], 'y': [.05, .25]},
+    title = {'text': "Product Flow"},
     gauge = {
         'shape': "bullet",
         'axis': {'range': [None, max(df.QNM)]},
@@ -210,8 +210,8 @@ def update_bulletplot(selected_day):
     fig.add_trace(go.Indicator(
                 mode = "number+gauge+delta", value = df.at[selected_day, "SP"],
                 delta = {'reference': df.at[selected_day, "SPNM"]},
-                domain = {'x': [0, 1], 'y': [0.4, .6]},
-                title = {'text': "SP"},
+                domain = {'x': [0.2, 1], 'y': [0.4, .6]},
+                title = {'text': "Salt Passage"},
                 gauge = {
                     'shape': "bullet",
                     'axis': {'range': [None, 2]},
@@ -226,8 +226,8 @@ def update_bulletplot(selected_day):
     fig.add_trace(go.Indicator(
     mode = "number+gauge+delta", value = df.at[selected_day, "dp"],
     delta = {'reference': df.at[selected_day, "DPNM"]},
-    domain = {'x': [0, 1], 'y': [.7,.9 ]},
-    title = {'text': "DP"},
+    domain = {'x': [0.2, 1], 'y': [.7,.9 ]},
+    title = {'text': "Differential Pressure"},
     gauge = {
         'shape': "bullet",
         'axis': {'range': [None, max(df.dp)]},
@@ -240,10 +240,10 @@ def update_bulletplot(selected_day):
     fig.update_layout(
         title={
         'text': "Normalized Performance Breakdown",
-        'y':0.9,
-        'x':0.5,
         'xanchor': 'center',
-        'yanchor': 'top'},
+        'yanchor': 'top',
+        'y':0.9,
+        'x':0.5,},
         xaxis_title="Time",
         font=dict(
             family="Courier New, monospace",
